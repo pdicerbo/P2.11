@@ -19,7 +19,8 @@ def main():
 
         MyK = KMeans(k,npoints)
 
-        MyK.init_system(data)
+        # MyK.init_system(data)
+        MyK.init_pp(data)
         MyK.clusterize()
         ObjFunc[NIt] = MyK.objective_func()
         MyAssign[NIt,:] = np.copy(MyK.membership)
