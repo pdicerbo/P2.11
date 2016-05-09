@@ -34,6 +34,7 @@ def main():
             MyTitle = "Case of k = "
             MyTitle += str(k)
             plt.title(MyTitle)
+            
         # plt.show()
         MyTitle = "Images/k"
         MyTitle += str(k)
@@ -56,43 +57,63 @@ def main():
     # k = 15
     k = MyRange[MinIndex]
     print("\n\tChoose k = ", k)
-    NIter = 10
-    
-    npoints = data.shape[0]
-    ObjFunc  = np.zeros(NIter)
-    MyAssign = np.zeros((NIter, npoints))
-
-    for NIt in range(NIter):
-        print("\n\tStarting iteration ", NIt+1, " of ", NIter)
-
-        MyK = KMeans(k,npoints)
-
-        # MyK.init_system(data)
-        MyK.init_pp(data)
-        MyK.clusterize()
-        ObjFunc[NIt] = MyK.objective_func()
-        MyAssign[NIt,:] = np.copy(MyK.membership)
-        
-        print("\tNumber of iteration: ", MyK.n_iter)
-        print("\tObjectiveFuncion: ", ObjFunc[NIt])
-        del MyK
-        
-    MinIndex = np.argmin(ObjFunc)
-    print("\n\n\tObjective Function minimum: ", ObjFunc.min())
     print("\tPlotting...")
 
+    # MyK = KMeans(k,npoints)
     plt.figure()
 
     # cmap = cm.get_cmap('jet')
     cmap = cm.get_cmap('nipy_spectral')
     # cmap = cm.get_cmap('hsv')
     
-    for j in range(MyK.MyData.shape[0]):
-        conv = float(MyAssign[MinIndex,j]) / float(k-1)        
+    for j in range(npoints): #MyK.MyData.shape[0]):
+        conv = float(MyAssign[MinIndex][j]) / float(k-1)        
         MyColor = cmap(conv)
-        plt.plot(MyK.MyData[j,0], MyK.MyData[j,1], '.', c=MyColor)
+        plt.plot(data[j,0], data[j,1], '.', c=MyColor)
         
     # plt.show()
+    MyTitle = "Number of clusters = "
+    MyTitle += str(k)
+    plt.title(MyTitle)
     plt.savefig("MyClusters.png")
+
+    # NIter = 10
+    
+    # npoints = data.shape[0]
+    # ObjFunc  = np.zeros(NIter)
+    # MyAssign = np.zeros((NIter, npoints))
+
+    # for NIt in range(NIter):
+    #     print("\n\tStarting iteration ", NIt+1, " of ", NIter)
+
+    #     MyK = KMeans(k,npoints)
+
+    #     # MyK.init_system(data)
+    #     MyK.init_pp(data)
+    #     MyK.clusterize()
+    #     ObjFunc[NIt] = MyK.objective_func()
+    #     MyAssign[NIt,:] = np.copy(MyK.membership)
+        
+    #     print("\tNumber of iteration: ", MyK.n_iter)
+    #     print("\tObjectiveFuncion: ", ObjFunc[NIt])
+    #     del MyK
+        
+    # MinIndex = np.argmin(ObjFunc)
+    # print("\n\n\tObjective Function minimum: ", ObjFunc.min())
+    # print("\tPlotting...")
+
+    # plt.figure()
+
+    # # cmap = cm.get_cmap('jet')
+    # cmap = cm.get_cmap('nipy_spectral')
+    # # cmap = cm.get_cmap('hsv')
+    
+    # for j in range(MyK.MyData.shape[0]):
+    #     conv = float(MyAssign[MinIndex,j]) / float(k-1)        
+    #     MyColor = cmap(conv)
+    #     plt.plot(MyK.MyData[j,0], MyK.MyData[j,1], '.', c=MyColor)
+        
+    # # plt.show()
+    # plt.savefig("MyClusters.png")
 
 main()
