@@ -14,6 +14,12 @@ class KMeans:
         self.new_member = np.zeros(npt, dtype = int)
         self.centers = np.zeros((k, 2))
         self.MyData  = np.empty(0)
+
+    def __del__(self):
+        del self.membership
+        del self.new_member
+        del self.centers
+        del self.MyData
         
     # "standard" K-means initialization
     def init_system(self, data):
