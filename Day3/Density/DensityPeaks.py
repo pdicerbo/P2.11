@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 
 def MySquareDistance(pt, center):
     return ((pt[0]-center[0])**2 + (pt[1]-center[1])**2)
@@ -40,16 +41,20 @@ DMax *= 1.1
 for k in np.arange(1, npoints):
     dmin = DMax
     NearestIndex = 0
+    check = 0
     for j in np.arange(k):
         dtmp = MySquareDistance(data[SortingMask[j], :], data[SortingMask[k], :])
         if dtmp <= dmin:
+            check = 1
             dmin = dtmp
             NearestIndex = j
-            
+
+        if check == 0:
+            print("Here")
     MyDelta[k] = np.sqrt(dmin)
-    MyNearestDense[j] = NearestIndex
+    MyNearestDense[k] = NearestIndex
     
-MyDelta[0] = MyDelta[MyDelta < DMax].max()*1.1
+MyDelta[0] = MyDelta.max()*1.1
 
 plt.figure()
 for j in range(npoints):
@@ -58,10 +63,31 @@ plt.show()
 plt.close("all")
 
 
+# optionally, I could take the value of DeltaCut also from raw_input
 MyCenters = np.where(MyDelta >= DeltaCut)
+print("Centers:")
 print(data[SortingMask[MyCenters]])
+NCenters = len(data[SortingMask[MyCenters]])
+
+for j in range(NCenters):
+    MyAssign[SortingMask[MyCenters[0][j]]] = j+1
+
+for j in np.arange(npoints):
+    if MyAssign[SortingMask[j]] < 1:
+        MyAssign[SortingMask[j]] = MyAssign[SortingMask[MyNearestDense[j]]]
 
 plt.figure()
+cmap = cm.get_cmap('nipy_spectral')
 for j in range(npoints):
-    plt.plot(data[j,0], data[j,1], 'b.')
-plt.show()
+    MyColor = cmap(float(MyAssign[j]-1) / float(NCenters))
+    plt.plot(data[j,0], data[j,1], '.', c = MyColor)
+
+
+# plot centers
+for j in range(NCenters):
+    MyColor = cmap(float(MyAssign[SortingMask[MyCenters[0][j]]]-1) / float(NCenters))
+    plt.plot(data[SortingMask[MyCenters[0][j]], 0], data[SortingMask[MyCenters[0][j]], 1],
+             'o', c = MyColor, label = "Cluster "+str(j))
+lgd = plt.legend(fontsize = 10, borderpad=0., markerscale=.7, numpoints = 1, bbox_to_anchor=(1.2,1.))
+# plt.show()
+plt.savefig("MyDensityPeak.png", bbox_extra_artists=(lgd,), bbox_inches='tight')
