@@ -10,6 +10,7 @@ def MyDistance(pt, center):
 
 # data = np.loadtxt("s3.txt")
 # dc = 57500
+# DeltaCut = 51970
 data = np.loadtxt("Aggregation.txt")
 dc = 2.3 # value of cut radius
 DeltaCut = 6.
@@ -22,6 +23,7 @@ MyDelta = np.zeros(npoints)
 MyNearestDense = np.zeros(npoints, dtype = int)
 MyAssign = np.zeros(npoints, dtype = int)
 DMax = 0.
+RhoT = 25. #100.
 
 for j in np.arange(npoints):
 
@@ -41,16 +43,12 @@ DMax *= 1.1
 for k in np.arange(1, npoints):
     dmin = DMax
     NearestIndex = 0
-    check = 0
     for j in np.arange(k):
         dtmp = MySquareDistance(data[SortingMask[j], :], data[SortingMask[k], :])
         if dtmp <= dmin:
-            check = 1
             dmin = dtmp
             NearestIndex = j
 
-        if check == 0:
-            print("Here")
     MyDelta[k] = np.sqrt(dmin)
     MyNearestDense[k] = NearestIndex
     
@@ -64,18 +62,18 @@ plt.close("all")
 
 
 # optionally, I could take the value of DeltaCut also from raw_input
-MyCenters = np.where(MyDelta >= DeltaCut)
+MyCenters = np.where((MyDelta >= DeltaCut) & (np.sort(Density)[::-1] >= RhoT))
 print("Centers:")
 print(data[SortingMask[MyCenters]])
 NCenters = len(data[SortingMask[MyCenters]])
 
 for j in range(NCenters):
-    MyAssign[SortingMask[MyCenters[0][j]]] = j+1
-
+    MyAssign[SortingMask[MyCenters[0][j]]] = j + 1
+    
 for j in np.arange(npoints):
     if MyAssign[SortingMask[j]] < 1:
         MyAssign[SortingMask[j]] = MyAssign[SortingMask[MyNearestDense[j]]]
-
+    
 plt.figure()
 cmap = cm.get_cmap('nipy_spectral')
 for j in range(npoints):
@@ -89,5 +87,6 @@ for j in range(NCenters):
     plt.plot(data[SortingMask[MyCenters[0][j]], 0], data[SortingMask[MyCenters[0][j]], 1],
              'o', c = MyColor, label = "Cluster "+str(j))
 lgd = plt.legend(fontsize = 10, borderpad=0., markerscale=.7, numpoints = 1, bbox_to_anchor=(1.2,1.))
-# plt.show()
-plt.savefig("MyDensityPeak.png", bbox_extra_artists=(lgd,), bbox_inches='tight')
+plt.show()
+# plt.savefig("MyDensityPeakS3.png", bbox_extra_artists=(lgd,), bbox_inches='tight')
+# plt.savefig("MyDensityPeak.png", bbox_extra_artists=(lgd,), bbox_inches='tight')
