@@ -78,6 +78,8 @@ def main():
 
         # s = str(h[1+MyAssign[MinIndex,j]])
         # plt.plot(MyK.MyData[j,0], MyK.MyData[j,1], color = h[1+MyAssign[MinIndex,j]])
+
+        # plt.plot(MyK.MyData[j,0], MyK.MyData[j,1], c = MyAssign[MinIndex,j])
         
     # plt.plot(data[:,0], data[:,1], '.')
     plt.show()
