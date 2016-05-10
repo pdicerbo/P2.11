@@ -68,7 +68,8 @@ print(data[SortingMask[MyCenters]])
 NCenters = len(data[SortingMask[MyCenters]])
 
 for j in range(NCenters):
-    MyAssign[SortingMask[MyCenters[0][j]]] = j + 1
+    # MyAssign[SortingMask[MyCenters[0][j]]] = j + 1
+    MyAssign[SortingMask[MyCenters[0][j]]] = data[SortingMask[MyCenters[0][j]],2] # j + 1
     
 for j in np.arange(npoints):
     if MyAssign[SortingMask[j]] < 1:
@@ -95,7 +96,7 @@ plt.show()
 # COMPUTE F-VARIANCE TEST
 N = np.zeros(NCenters)
 XMean  = np.zeros(2)
-XCMean = np.zeros((k,2))
+XCMean = np.zeros((NCenters,2))
 # compute xmean
 for j in range(npoints):
     N[MyAssign[j]-1] += 1
@@ -123,3 +124,34 @@ for j in range(NCenters):
 print("\tMy FRatio =", numerator/denom)
 
 # COMPUTE NORMALIZED MUTUAL INFORMATION
+
+MyProbability = np.zeros(NCenters)
+GroundT = np.zeros(NCenters)
+MyMat = np.zeros((NCenters, NCenters))
+
+for j in range(npoints):
+    GroundT[data[j,2]-1] += 1.
+    MyMat[data[j,2]-1, MyAssign[j]-1] += 1.
+
+MyMat /= float(npoints)
+
+for j in range(NCenters):
+    MyProbability[j] = float(N[j]) / float(npoints)
+    GroundT[j] /= float(npoints)
+    
+# print(np.sort(GroundT))
+# print(np.sort(MyProbability))
+# print(MyMat)
+
+MutualInfo = 0.
+Hk = 0.
+Hg = 0.
+
+for i in range(NCenters):
+    Hg += GroundT[i] * np.log(GroundT[i])
+    Hk += MyProbability[i] * np.log(MyProbability[i])
+    for j in range(NCenters):
+        if MyMat[i,j] > 0.:
+            MutualInfo += MyMat[i,j] * np.log(MyMat[i,j]/(GroundT[i] * MyProbability[j])) 
+
+print("\tMy Normalized Mutual Information =", -2.*MutualInfo/(Hg+Hk))
