@@ -39,7 +39,7 @@ class KMeans:
 
         self.MyData = np.copy(data)
         NCenter = 1
-        self.centers[0, :] = data[MyRand, :]
+        self.centers[0, :] = data[MyRand, 0:2]
 
         MyArr = np.zeros(data.shape[0], dtype = float)
         
@@ -64,7 +64,7 @@ class KMeans:
                 MyRand  = np.random.random_integers(0, NData-1, 1)
                 NewRand = np.random.random()
                 if NewRand < MyArr[MyRand]:
-                    self.centers[NCenter, :] = data[MyRand, :]
+                    self.centers[NCenter, :] = data[MyRand, 0:2]
                     NCenter += 1
                     check = 1
                 
