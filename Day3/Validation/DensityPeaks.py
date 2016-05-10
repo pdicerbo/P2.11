@@ -93,25 +93,33 @@ plt.show()
 
 
 # COMPUTE F-VARIANCE TEST
-numerator = 0.
-
-for j in range(npoints):
-    numerator += MySquareDistance(data[j,0:2], data[SortingMask[MyCenters[0][MyAssign[j]-1]], 0:2])
-
-numerator *= NCenters
 N = np.zeros(NCenters)
-XMean = np.zeros(2)
-
+XMean  = np.zeros(2)
+XCMean = np.zeros((k,2))
 # compute xmean
 for j in range(npoints):
     N[MyAssign[j]-1] += 1
     XMean[0] += data[j, 0]/npoints
     XMean[1] += data[j, 1]/npoints
 
+    XCMean[MyAssign[j]-1, 0] += data[j, 0]
+    XCMean[MyAssign[j]-1, 1] += data[j, 1]
+
+for j in range(NCenters):
+    XCMean[j,:] /= N[j]
+    
+numerator = 0.
+
+for j in range(npoints):
+    numerator += MySquareDistance(data[j,0:2], XCMean[MyAssign[j]-1,:])
+
+numerator *= NCenters
+
 denom = 0.
-print(N)
 
 for j in range(NCenters):
     denom += N[j] * MySquareDistance(data[SortingMask[MyCenters[0][j]], :], XMean)
     
 print("\tMy FRatio =", numerator/denom)
+
+# COMPUTE NORMALIZED MUTUAL INFORMATION

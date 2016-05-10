@@ -28,9 +28,9 @@ plt.show()
 # plt.savefig(MyTitle)
 
 # COMPUTE F-VARIANCE TEST
-numerator = k * MyK.objective_func()
 N = np.zeros(k)
 XMean = np.zeros(2)
+XCMean = np.zeros((k,2))
 
 # compute xmean for each cluster
 for j in range(npoints):
@@ -38,7 +38,18 @@ for j in range(npoints):
     XMean[0] += MyK.MyData[j, 0]/npoints
     XMean[1] += MyK.MyData[j, 1]/npoints
 
-print(N)
+    XCMean[MyK.membership[j], 0] += data[j, 0]
+    XCMean[MyK.membership[j], 1] += data[j, 1]
+
+for j in range(k):
+    XCMean[j] /= N[j]
+    
+numerator = 0.
+
+for j in range(npoints):
+    numerator += MySquareDistance(data[j,0:2], XCMean[MyK.membership[j],:])
+
+numerator *= k
 denom = 0.
 
 for j in range(k):
