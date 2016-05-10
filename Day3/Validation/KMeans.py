@@ -56,5 +56,3 @@ for j in range(k):
     denom += N[j] * MySquareDistance(MyK.centers[j,:], XMean[:])
 
 print("\tMy FRatio = ", numerator/denom)
-    
-    
