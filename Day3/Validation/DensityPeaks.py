@@ -23,7 +23,7 @@ MyDelta = np.zeros(npoints)
 MyNearestDense = np.zeros(npoints, dtype = int)
 MyAssign = np.zeros(npoints, dtype = int)
 DMax = 0.
-RhoT = 25. #100.
+RhoT = 25.
 
 for j in np.arange(npoints):
 
@@ -68,8 +68,8 @@ print(data[SortingMask[MyCenters]])
 NCenters = len(data[SortingMask[MyCenters]])
 
 for j in range(NCenters):
-    # MyAssign[SortingMask[MyCenters[0][j]]] = j + 1
-    MyAssign[SortingMask[MyCenters[0][j]]] = data[SortingMask[MyCenters[0][j]],2] # j + 1
+    MyAssign[SortingMask[MyCenters[0][j]]] = j + 1
+    # MyAssign[SortingMask[MyCenters[0][j]]] = data[SortingMask[MyCenters[0][j]],2] # j + 1
     
 for j in np.arange(npoints):
     if MyAssign[SortingMask[j]] < 1:
@@ -97,7 +97,7 @@ plt.show()
 N = np.zeros(NCenters)
 XMean  = np.zeros(2)
 XCMean = np.zeros((NCenters,2))
-# compute xmean
+
 for j in range(npoints):
     N[MyAssign[j]-1] += 1
     XMean[0] += data[j, 0]/npoints
@@ -123,8 +123,8 @@ for j in range(NCenters):
     
 print("\tMy FRatio =", numerator/denom)
 
-# COMPUTE NORMALIZED MUTUAL INFORMATION
 
+# COMPUTE NORMALIZED MUTUAL INFORMATION
 MyProbability = np.zeros(NCenters)
 GroundT = np.zeros(NCenters)
 MyMat = np.zeros((NCenters, NCenters))
@@ -139,10 +139,6 @@ for j in range(NCenters):
     MyProbability[j] = float(N[j]) / float(npoints)
     GroundT[j] /= float(npoints)
     
-# print(np.sort(GroundT))
-# print(np.sort(MyProbability))
-# print(MyMat)
-
 MutualInfo = 0.
 Hk = 0.
 Hg = 0.
