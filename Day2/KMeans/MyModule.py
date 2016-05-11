@@ -16,6 +16,8 @@ class KMeans:
         self.MyData  = np.empty(0)
 
     def __del__(self):
+        # also with this statements
+        # the array will not be deleted....
         del self.membership
         del self.new_member
         del self.centers
