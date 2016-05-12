@@ -8,12 +8,13 @@ def MySquareDistance(pt, center):
 def MyDistance(pt, center):
     return np.sqrt((pt[0]-center[0])**2 + (pt[1]-center[1])**2)
 
-# data = np.loadtxt("s3.txt")
-# dc = 57500
-# DeltaCut = 51970
 data = np.loadtxt("Aggregation.txt")
 dc = 2.3 # value of cut radius
 DeltaCut = 6.
+
+# data = np.loadtxt("s3.txt")
+# dc = 57500
+# DeltaCut = 51970
 
 npoints = data.shape[0]
 DcSquare = dc * dc
@@ -119,7 +120,8 @@ numerator *= NCenters
 denom = 0.
 
 for j in range(NCenters):
-    denom += N[j] * MySquareDistance(data[SortingMask[MyCenters[0][j]], :], XMean)
+    # denom += N[j] * MySquareDistance(data[SortingMask[MyCenters[0][j]], :], XMean)
+    denom += N[j] * MySquareDistance(XCMean[j,:], XMean)
     
 print("\tMy FRatio =", numerator/denom)
 
