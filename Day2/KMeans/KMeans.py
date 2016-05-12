@@ -31,9 +31,10 @@ def main():
             conv = float(MyAssign[counter][j]) / float(k-1)        
             MyColor = cmap(conv)
             plt.plot(MyK.MyData[j,0], MyK.MyData[j,1], '.', c=MyColor)
-            MyTitle = "Case of k = "
-            MyTitle += str(k)
-            plt.title(MyTitle)
+            
+        MyTitle = "Case of k = "
+        MyTitle += str(k)
+        plt.title(MyTitle)
             
         # plt.show()
         MyTitle = "Images/k"
@@ -52,6 +53,7 @@ def main():
     plt.xlabel("k")
     plt.ylabel("ObjFunc")
     plt.show()
+    plt.close("all")
     
     k = 15
     print("\n\tChoose k = ", k)
