@@ -7,10 +7,10 @@ def MySquareDistance(pt, center):
     return ((pt[0]-center[0])**2 + (pt[1]-center[1])**2)
 
 class FuzzyCMeans:
-    def __init__(self, k, m, npt):
+    def __init__(self, k, npt):
         self.k = k
-        self.m = m
-        self.threshold = 1.e-3
+        self.m = 2.
+        self.threshold = 1.e-2
         self.n_iter = 0
         self.MyDim = 0
         self.NPts = 0
@@ -27,14 +27,12 @@ class FuzzyCMeans:
         self.MyData = np.copy(data)
 
         for j in np.arange(NData):
-
             MyArr = np.random.random(self.k)
-
             self.membership[j,:] = np.random.random(self.k)
      
     def clusterize(self):
+
         self.n_iter += 1
-        print("iteration ", self.n_iter)
 
         # compute centers:
         for j in range(self.k):
@@ -61,7 +59,6 @@ class FuzzyCMeans:
         if MyDiff.max() < self.threshold:
             return
         else:
-            print("MyDiff.max()", MyDiff.max())
             self.membership = np.copy(self.new_membership)
             self.new_membership = np.zeros((self.MyData.shape[0], self.k))
             self.clusterize()
