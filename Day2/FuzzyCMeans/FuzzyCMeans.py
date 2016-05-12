@@ -7,8 +7,8 @@ def main():
 
     data = np.loadtxt("s3.txt")
 
-    kmin = 15
-    kmax = 15
+    kmin = 2
+    kmax = 18
 
     npoints = data.shape[0]
     ObjFunc  = np.zeros(kmax - kmin + 1)
