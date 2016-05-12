@@ -8,12 +8,13 @@ def MySquareDistance(pt, center):
 def MyDistance(pt, center):
     return np.sqrt((pt[0]-center[0])**2 + (pt[1]-center[1])**2)
 
-# data = np.loadtxt("s3.txt")
-# dc = 57500
-# DeltaCut = 51970
 data = np.loadtxt("Aggregation.txt")
 dc = 2.3 # value of cut radius
 DeltaCut = 6.
+
+# data = np.loadtxt("s3.txt")
+# dc = 57500
+# DeltaCut = 51970
 
 npoints = data.shape[0]
 DcSquare = dc * dc
@@ -23,7 +24,7 @@ MyDelta = np.zeros(npoints)
 MyNearestDense = np.zeros(npoints, dtype = int)
 MyAssign = np.zeros(npoints, dtype = int)
 DMax = 0.
-RhoT = 25. #100.
+RhoT = 25.
 
 for j in np.arange(npoints):
 
@@ -87,6 +88,7 @@ for j in range(NCenters):
     plt.plot(data[SortingMask[MyCenters[0][j]], 0], data[SortingMask[MyCenters[0][j]], 1],
              'o', c = MyColor, label = "Cluster "+str(j))
 lgd = plt.legend(fontsize = 10, borderpad=0., markerscale=.7, numpoints = 1, bbox_to_anchor=(1.2,1.))
+
 plt.show()
 # plt.savefig("MyDensityPeakS3.png", bbox_extra_artists=(lgd,), bbox_inches='tight')
 # plt.savefig("MyDensityPeak.png", bbox_extra_artists=(lgd,), bbox_inches='tight')
